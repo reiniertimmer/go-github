@@ -22,7 +22,7 @@ type RunnerApplicationDownload struct {
 //
 // GitHub API docs: https://developer.github.com/v3/actions/self_hosted_runners/#list-downloads-for-the-self-hosted-runner-application
 func (s *ActionsService) ListRunnerApplicationDownloads(ctx context.Context, owner, repo string) ([]*RunnerApplicationDownload, *Response, error) {
-	u := createEndpoint(owner, repo, "actions/runners/downloads")
+	u := fmt.Sprintf("repos/%v/%v/actions/runners/downloads", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -47,7 +47,7 @@ type RegistrationToken struct {
 //
 // GitHub API docs: https://developer.github.com/v3/actions/self_hosted_runners/#create-a-registration-token
 func (s *ActionsService) CreateRegistrationToken(ctx context.Context, owner, repo string) (*RegistrationToken, *Response, error) {
-	u := createEndpoint(owner, repo, "actions/runners/registration-token")
+	u := fmt.Sprintf("repos/%v/%v/actions/runners/registration-token", owner, repo)
 
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
@@ -81,7 +81,7 @@ type Runners struct {
 //
 // GitHub API docs: https://developer.github.com/v3/actions/self_hosted_runners/#list-self-hosted-runners-for-a-repository
 func (s *ActionsService) ListRunners(ctx context.Context, owner, repo string, opts *ListOptions) (*Runners, *Response, error) {
-	u := createEndpoint(owner, repo, "actions/runners")
+	u := fmt.Sprintf("repos/%v/%v/actions/runners", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -105,7 +105,7 @@ func (s *ActionsService) ListRunners(ctx context.Context, owner, repo string, op
 //
 // GitHub API docs: https://developer.github.com/v3/actions/self_hosted_runners/#get-a-self-hosted-runner
 func (s *ActionsService) GetRunner(ctx context.Context, owner, repo string, runnerID int64) (*Runner, *Response, error) {
-	u := createEndpoint(owner, repo, fmt.Sprintf("actions/runners/%v", runnerID))
+	u := fmt.Sprintf("repos/%v/%v/actions/runners/%v", owner, repo, runnerID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -130,7 +130,7 @@ type RemoveToken struct {
 //
 // GitHub API docs: https://developer.github.com/v3/actions/self_hosted_runners/#create-a-remove-token
 func (s *ActionsService) CreateRemoveToken(ctx context.Context, owner, repo string) (*RemoveToken, *Response, error) {
-	u := createEndpoint(owner, repo, "actions/runners/remove-token")
+	u := fmt.Sprintf("repos/%v/%v/actions/runners/remove-token", owner, repo)
 
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
@@ -150,7 +150,7 @@ func (s *ActionsService) CreateRemoveToken(ctx context.Context, owner, repo stri
 //
 // GitHub API docs: https://developer.github.com/v3/actions/self_hosted_runners/#remove-a-self-hosted-runner
 func (s *ActionsService) RemoveRunner(ctx context.Context, owner, repo string, runnerID int64) (*Response, error) {
-	u := createEndpoint(owner, repo, fmt.Sprintf("actions/runners/%v", runnerID))
+	u := fmt.Sprintf("repos/%v/%v/actions/runners/%v", owner, repo, runnerID)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
@@ -158,6 +158,25 @@ func (s *ActionsService) RemoveRunner(ctx context.Context, owner, repo string, r
 	}
 
 	return s.client.Do(ctx, req, nil)
+}
+
+// ListOrganizationRunnerApplicationDownloads lists self-hosted runner application binaries that can be downloaded and run.
+//
+// GitHub API docs: https://developer.github.com/v3/actions/self-hosted-runners/#list-runner-applications-for-an-organization
+func (s *ActionsService) ListOrganizationRunnerApplicationDownloads(ctx context.Context, owner string) ([]*RunnerApplicationDownload, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/runners/downloads", owner)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var rads []*RunnerApplicationDownload
+	resp, err := s.client.Do(ctx, req, &rads)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return rads, resp, nil
 }
 
 // CreateOrganizationRegistrationToken creates a token that can be used to add a self-hosted runner to an organization.
@@ -208,8 +227,6 @@ func (s *ActionsService) ListOrganizationRunners(ctx context.Context, owner stri
 //
 // GitHub API docs: https://developer.github.com/v3/actions/self-hosted-runners/#create-a-remove-token-for-an-organization
 func (s *ActionsService) GetOrganizationRunner(ctx context.Context, owner string, runnerID int64) (*Runner, *Response, error) {
-
-	
 	u := fmt.Sprintf("orgs/%v/actions/runners/%v", owner, runnerID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -257,12 +274,4 @@ func (s *ActionsService) RemoveOrganizationRunner(ctx context.Context, owner str
 	}
 
 	return s.client.Do(ctx, req, nil)
-}
-
-func createEndpoint(owner, repo, postfix string) string {
-	if len(repo) > 0 {
-		return fmt.Sprintf("repos/%v/%v/%v", owner, repo, postfix)
-	} else {
-		return fmt.Sprintf("orgs/%v/%v", owner, postfix)
-	}
 }
