@@ -160,104 +160,104 @@ func (s *ActionsService) RemoveRunner(ctx context.Context, owner, repo string, r
 	return s.client.Do(ctx, req, nil)
 }
 
-// // CreateOrganizationRegistrationToken creates a token that can be used to add a self-hosted runner to an organization.
-// //
-// // GitHub API docs: https://developer.github.com/v3/actions/self-hosted-runners/#list-self-hosted-runners-for-an-organization
-// func (s *ActionsService) CreateOrganizationRegistrationToken(ctx context.Context, owner string) (*RegistrationToken, *Response, error) {
-// 	u := fmt.Sprintf("orgs/%v/actions/runners/registration-token", owner)
+// CreateOrganizationRegistrationToken creates a token that can be used to add a self-hosted runner to an organization.
+//
+// GitHub API docs: https://developer.github.com/v3/actions/self-hosted-runners/#list-self-hosted-runners-for-an-organization
+func (s *ActionsService) CreateOrganizationRegistrationToken(ctx context.Context, owner string) (*RegistrationToken, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/runners/registration-token", owner)
 
-// 	req, err := s.client.NewRequest("POST", u, nil)
-// 	if err != nil {
-// 		return nil, nil, err
-// 	}
+	req, err := s.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
 
-// 	registrationToken := new(RegistrationToken)
-// 	resp, err := s.client.Do(ctx, req, registrationToken)
-// 	if err != nil {
-// 		return nil, resp, err
-// 	}
+	registrationToken := new(RegistrationToken)
+	resp, err := s.client.Do(ctx, req, registrationToken)
+	if err != nil {
+		return nil, resp, err
+	}
 
-// 	return registrationToken, resp, nil
-// }
+	return registrationToken, resp, nil
+}
 
-// // ListOrganizationRunners lists all the self-hosted runners for an organization.
-// //
-// // GitHub API docs: https://developer.github.com/v3/actions/self-hosted-runners/#list-self-hosted-runners-for-an-organization
-// func (s *ActionsService) ListOrganizationRunners(ctx context.Context, owner string, opts *ListOptions) (*Runners, *Response, error) {
-// 	u := fmt.Sprintf("orgs/%v/actions/runners", owner)
-// 	u, err := addOptions(u, opts)
-// 	if err != nil {
-// 		return nil, nil, err
-// 	}
+// ListOrganizationRunners lists all the self-hosted runners for an organization.
+//
+// GitHub API docs: https://developer.github.com/v3/actions/self-hosted-runners/#list-self-hosted-runners-for-an-organization
+func (s *ActionsService) ListOrganizationRunners(ctx context.Context, owner string, opts *ListOptions) (*Runners, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/runners", owner)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
 
-// 	req, err := s.client.NewRequest("GET", u, nil)
-// 	if err != nil {
-// 		return nil, nil, err
-// 	}
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
 
-// 	runners := &Runners{}
-// 	resp, err := s.client.Do(ctx, req, &runners)
-// 	if err != nil {
-// 		return nil, resp, err
-// 	}
+	runners := &Runners{}
+	resp, err := s.client.Do(ctx, req, &runners)
+	if err != nil {
+		return nil, resp, err
+	}
 
-// 	return runners, resp, nil
-// }
+	return runners, resp, nil
+}
 
-// // GetOrganizationRunner gets a specific self-hosted runner for an organization using its runner ID.
-// //
-// // GitHub API docs: https://developer.github.com/v3/actions/self-hosted-runners/#create-a-remove-token-for-an-organization
-// func (s *ActionsService) GetOrganizationRunner(ctx context.Context, owner string, runnerID int64) (*Runner, *Response, error) {
-// 	u := fmt.Sprintf(owner, "", fmt.Sprintf("actions/runners/%v", runnerId)
+// GetOrganizationRunner gets a specific self-hosted runner for an organization using its runner ID.
+//
+// GitHub API docs: https://developer.github.com/v3/actions/self-hosted-runners/#create-a-remove-token-for-an-organization
+func (s *ActionsService) GetOrganizationRunner(ctx context.Context, owner string, runnerID int64) (*Runner, *Response, error) {
 
-// 	u := fmt.Sprintf("orgs/%v/actions/runners/%v", owner, runnerID)
-// 	req, err := s.client.NewRequest("GET", u, nil)
-// 	if err != nil {
-// 		return nil, nil, err
-// 	}
+	
+	u := fmt.Sprintf("orgs/%v/actions/runners/%v", owner, runnerID)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
 
-// 	runner := new(Runner)
-// 	resp, err := s.client.Do(ctx, req, runner)
-// 	if err != nil {
-// 		return nil, resp, err
-// 	}
+	runner := new(Runner)
+	resp, err := s.client.Do(ctx, req, runner)
+	if err != nil {
+		return nil, resp, err
+	}
 
-// 	return runner, resp, nil
-// }
+	return runner, resp, nil
+}
 
-// // CreateOrganizationRemoveToken creates a token that can be used to remove a self-hosted runner from an organization.
-// //
-// // GitHub API docs: https://developer.github.com/v3/actions/self-hosted-runners/#create-a-remove-token-for-an-organization
-// func (s *ActionsService) CreateOrganizationRemoveToken(ctx context.Context, owner string) (*RemoveToken, *Response, error) {
-// 	u := fmt.Sprintf("orgs/%v/actions/runners/remove-token", owner)
+// CreateOrganizationRemoveToken creates a token that can be used to remove a self-hosted runner from an organization.
+//
+// GitHub API docs: https://developer.github.com/v3/actions/self-hosted-runners/#create-a-remove-token-for-an-organization
+func (s *ActionsService) CreateOrganizationRemoveToken(ctx context.Context, owner string) (*RemoveToken, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/runners/remove-token", owner)
 
-// 	req, err := s.client.NewRequest("POST", u, nil)
-// 	if err != nil {
-// 		return nil, nil, err
-// 	}
+	req, err := s.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
 
-// 	removeToken := new(RemoveToken)
-// 	resp, err := s.client.Do(ctx, req, removeToken)
-// 	if err != nil {
-// 		return nil, resp, err
-// 	}
+	removeToken := new(RemoveToken)
+	resp, err := s.client.Do(ctx, req, removeToken)
+	if err != nil {
+		return nil, resp, err
+	}
 
-// 	return removeToken, resp, nil
-// }
+	return removeToken, resp, nil
+}
 
-// // RemoveOrganizationRunner forces the removal of a self-hosted runner from an organization using the runner id.
-// //
-// // GitHub API docs: https://developer.github.com/v3/actions/self-hosted-runners/#delete-a-self-hosted-runner-from-an-organization
-// func (s *ActionsService) RemoveOrganizationRunner(ctx context.Context, owner string, runnerID int64) (*Response, error) {
-// 	u := fmt.Sprintf("orgs/%v/actions/runners/%v", owner, runnerID)
+// RemoveOrganizationRunner forces the removal of a self-hosted runner from an organization using the runner id.
+//
+// GitHub API docs: https://developer.github.com/v3/actions/self-hosted-runners/#delete-a-self-hosted-runner-from-an-organization
+func (s *ActionsService) RemoveOrganizationRunner(ctx context.Context, owner string, runnerID int64) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/runners/%v", owner, runnerID)
 
-// 	req, err := s.client.NewRequest("DELETE", u, nil)
-// 	if err != nil {
-// 		return nil, err
-// 	}
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
 
-// 	return s.client.Do(ctx, req, nil)
-// }
+	return s.client.Do(ctx, req, nil)
+}
 
 func createEndpoint(owner, repo, postfix string) string {
 	if len(repo) > 0 {
